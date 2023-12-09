@@ -1,0 +1,15 @@
+schemaVersion: "2.0.0"
+
+fileExistenceTests:
+  - name: 'nginx.conf'
+    path: '/etc/nginx/nginx.conf'
+    shouldExist: true
+
+  - name: 'glpi.int.rcacloud.it.conf'
+    path: '/etc/nginx/conf.d/glpi.int.rcacloud.it.conf'
+    shouldExist: true
+
+  - name: 'php-fpm.conf'
+    path: '/etc/nginx/conf.d/php-fpm.conf'
+    shouldExist: true
+    

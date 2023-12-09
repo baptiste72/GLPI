@@ -1,0 +1,17 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  envVars:
+    - key: MARIADB_VERSION
+      value: 1:10.6.12+maria~ubu2004
+  labels:
+    - key: 'description'
+      value: 'Set up MariaDB for GLPI'
+    - key: 'maintainer'
+      value: 'Team DSI'
+    - key: 'version'
+      value: '1:10.6.12+maria~ubu2004'
+  exposedPorts: ["3306"]
+  volumes: ["/var/lib/mysql"]
+  entrypoint: ["docker-entrypoint.sh"]
+  cmd: ["mariadbd"]

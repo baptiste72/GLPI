@@ -1,0 +1,17 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  envVars:
+    - key: NGINX_VERSION
+      value: 1.22.1
+  labels:
+    - key: 'description'
+      value: 'Set up NGINX for GLPI'
+    - key: 'maintainer'
+      value: 'Team DSI'
+    - key: 'version'
+      value: '1.22.1'
+  exposedPorts: ["80"]
+  entrypoint: ["nginx", "-g", "daemon off;"]
+  workdir: "/usr/share/nginx/glpi"
+  

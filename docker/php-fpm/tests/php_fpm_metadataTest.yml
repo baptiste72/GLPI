@@ -1,0 +1,16 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  envVars:
+    - key: PHP_VERSION
+      value: 8.1.14
+  labels:
+    - key: 'description'
+      value: 'Set up PHP-FPM for GLPI'
+    - key: 'maintainer'
+      value: 'Team DSI'
+    - key: 'version'
+      value: '8.1.14'
+  exposedPorts: ["9000"]
+  entrypoint: ["/entrypoint.sh"]
+  workdir: "/usr/share/nginx/glpi"

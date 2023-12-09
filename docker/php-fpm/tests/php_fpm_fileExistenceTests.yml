@@ -1,0 +1,40 @@
+schemaVersion: "2.0.0"
+
+fileExistenceTests:
+  - name: 'php.ini'
+    path: '/usr/local/etc/php/php.ini'
+    shouldExist: true
+
+  - name: 'glpi.conf'
+    path: '/usr/local/etc/php-fpm.d/glpi.conf'
+    shouldExist: true
+
+  - name: 'local_define.php'
+    path: '/etc/glpi/local_define.php'
+    shouldExist: true
+
+  - name: 'grant_timezones.php'
+    path: '/usr/local/etc/php/scripts/grant_timezones.php'
+    shouldExist: true
+
+  - name: 'create_glpi_alerts.php'
+    path: '/usr/local/etc/php/scripts/create_glpi_alerts.php'
+    shouldExist: true
+
+  - name: 'composer'
+    path: '/usr/bin/composer'
+    shouldExist: true
+    permissions: '-rwxr-xr-x'
+    isExecutableBy: 'any'
+
+  - name: 'healthcheck.sh'
+    path: '/healthcheck.sh'
+    shouldExist: true
+    permissions: '-rwxrwxr-x'
+    isExecutableBy: 'any'
+
+  - name: 'entrypoint.sh'
+    path: '/entrypoint.sh'
+    shouldExist: true
+    permissions: '-rwxrwxr-x'
+    isExecutableBy: 'any'

@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+  nginx:
+    image: git.int.rcacloud.it:4567/dsi/developments/glpi/nginx
+    hostname: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./..:/usr/share/nginx/glpi
+      - /usr/share/nginx/glpi/docker
+      - socket:/run/php
+      - /var/log/nginx:/var/log/nginx
+    networks:
+      - frontend
+    depends_on:
+      php-fpm:
+        condition: service_healthy
+    restart: always
+
+  php-fpm:
+    image: git.int.rcacloud.it:4567/dsi/developments/glpi/php-fpm
+    hostname: php-fpm
+    container_name: php-fpm
+    volumes:
+      - ./..:/usr/share/nginx/glpi
+      - /usr/share/nginx/glpi/docker
+      - socket:/run/php
+      - ./php-fpm/config/glpi/glpicrypt.key:/etc/glpi/glpicrypt.key
+      - ./php-fpm/config/glpi/files:/var/lib/glpi
+      - ./php-fpm/config/glpi/marketplace:/usr/share/nginx/glpi/marketplace
+      - ./php-fpm/config/glpi/plugins:/usr/share/nginx/glpi/plugins
+      - /var/log/glpi:/var/log/glpi
+    environment:
+      MARIADB_HOST: mariadb
+      MARIADB_DATABASE: glpi
+      MARIADB_USER: glpi
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?err}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?err}
+    networks:
+      - backend
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: always
+
+  mariadb:
+    image: git.int.rcacloud.it:4567/dsi/developments/glpi/mariadb
+    hostname: mariadb
+    container_name: mariadb
+    volumes:
+      - ./mariadb/config/dump_glpi.sql:/docker-entrypoint-initdb.d/dump_glpi.sql
+      - mariadb_data:/var/lib/mysql
+      - /var/log/mysql:/var/log/mysql
+    environment:
+      MARIADB_HOST: mariadb
+      MARIADB_DATABASE: glpi
+      MARIADB_USER: glpi
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?err}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?err}
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -h $${MARIADB_HOST} -u $${MARIADB_USER} -p$${MARIADB_PASSWORD}"]
+      interval: 1m
+      timeout: 3s
+      start_period: 4m
+    restart: always
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  socket:
+  mariadb_data:

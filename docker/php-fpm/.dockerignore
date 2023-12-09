@@ -1,0 +1,4 @@
+*
+!/config
+!healthcheck.sh
+!entrypoint.sh
